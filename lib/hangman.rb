@@ -24,10 +24,8 @@ class Game
           @word_display[index] = guess
         end
       end
-      #p @word_display
     else
       puts "Incorrect guess"
-      #p @word_display
       @incorrect_characters.push(guess)
       @incorrect_guesses_left -= 1
     end
@@ -43,7 +41,7 @@ class Game
   end
 
   def game_over?
-    if !@word_display.include?("_") #if the word display doesn't include a _
+    if !@word_display.include?("_")
       puts "Game over! You win!"
       puts "You correctly guessed #{@word_display}"
       return true
