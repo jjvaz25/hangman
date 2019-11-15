@@ -5,7 +5,7 @@ class WordGuesser
 
   def make_guess
     character = ""
-    puts "What letter would you like to guess?"
+    puts "\n\nWhat letter would you like to guess?"
     guess = gets.chomp.downcase
     if valid_guess?(guess)
       p guess
