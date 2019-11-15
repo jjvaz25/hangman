@@ -31,7 +31,7 @@ class Game
     end
   end
 
-  def turn
+  def play
     while !game_over?
       puts "Guess the following word: #{@word_display}"
       puts "Incorrect guesses left: #{@incorrect_guesses_left}"
@@ -57,7 +57,7 @@ class Game
 end #end class
 
 game = Game.new
-game.turn
+game.play
 
 =begin
 Logic:
