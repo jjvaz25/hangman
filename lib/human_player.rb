@@ -8,7 +8,7 @@ class WordGuesser
     puts "\n\nWhat letter would you like to guess?"
     guess = gets.chomp.downcase
     if valid_guess?(guess)
-      p guess
+      guess
     else
       valid_input = false
       while valid_input != true
@@ -16,7 +16,7 @@ class WordGuesser
         guess = gets.chomp.downcase
         valid_guess?(guess)? valid_input = true : valid_input = false
       end
-      p guess
+      guess
     end
   end
 
