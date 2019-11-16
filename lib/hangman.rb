@@ -1,5 +1,6 @@
 require_relative 'computer_player.rb'
 require_relative 'human_player.rb'
+require 'yaml'
 
 puts "Hangman initialized!\n\n"
 
@@ -11,7 +12,8 @@ class Game
     @incorrect_guesses_left = 6
     @word_display = "_" * (@word_creator.chosen_word).size
     @incorrect_characters = []
-    p @secret_word = @word_creator.chosen_word
+    @secret_word = @word_creator.chosen_word
+    #p @secret_word
     @word_display
   end
 
@@ -32,11 +34,18 @@ class Game
   end
 
   def play
+    load_game_from_yaml
     while !game_over?
       puts "Guess the following word: #{@word_display}"
       puts "Incorrect guesses left: #{@incorrect_guesses_left}"
       puts "Incorrect characters: #{@incorrect_characters}"
       guess_feedback
+      puts "Save game?"
+      answ = gets.chomp
+      if answ.downcase == "y"
+        save_game_to_yaml
+      end
+      
     end
   end
 
@@ -54,9 +63,45 @@ class Game
     end
   end
 
+  def save_game_to_yaml
+    puts "Type your game save name"
+    file_name = gets.chomp + ".yml"
+
+    hash = {
+      :word_guessor => @word_guesser,
+      :worc_creator => @word_creator,
+      :incorrect_guesses_left => @incorrect_guesses_left,
+      :word_display => @word_display,
+      :incorrect_characters => @incorrect_characters,
+      :secret_word => @secret_word
+    }
+    dump = YAML::dump(hash)
+    File.open(file_name, "w") { |file| file.write(dump) }
+  end
+
+  def load_game_from_yaml
+    puts "Would you like to load a previous game page('Y' or 'N')?"
+    load_game = gets.chomp.downcase
+    if load_game.downcase == "y"
+      puts "Type in game save name"
+      save_name = gets.chomp + ".yml"
+      game_to_load = File.read(save_name)
+      game = YAML.load(game_to_load)
+
+      @word_guesser = game[:word_guessor]
+      @word_creator = game[:word_creator]
+      @incorrect_guesses_left = game[:incorrect_guesses_left]
+      @word_display = game[:word_display]
+      @incorrect_characters = game[:incorrect_characters]
+      @secret_word = game[:secret_word]
+    end
+  end
+
+
 end #end class
 
 game = Game.new
+#game.save_game_to_yaml
 game.play
 
 =begin
