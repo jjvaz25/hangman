@@ -24,28 +24,25 @@ class Game
       @secret_word.each_char.with_index do |char, index|
         if char == guess
           @word_display[index] = guess
+          puts @word_display
         end
       end
     else
       puts "Incorrect guess"
       @incorrect_characters.push(guess)
       @incorrect_guesses_left -= 1
+      puts @word_display
     end
   end
 
   def play
     load_game_from_yaml
     while !game_over?
+      save_game_to_yaml
       puts "Guess the following word: #{@word_display}"
       puts "Incorrect guesses left: #{@incorrect_guesses_left}"
       puts "Incorrect characters: #{@incorrect_characters}"
       guess_feedback
-      puts "Save game?"
-      answ = gets.chomp
-      if answ.downcase == "y"
-        save_game_to_yaml
-      end
-      
     end
   end
 
@@ -64,19 +61,24 @@ class Game
   end
 
   def save_game_to_yaml
-    puts "Type your game save name"
-    file_name = gets.chomp + ".yml"
+    puts "Do you want to save your game ('Y' or 'N')?"
+    save_game = gets.chomp.downcase
+    if save_game.downcase == "y"
+      puts "Type your game save name"
+      file_name = gets.chomp + ".yml"
+  
+      hash = {
+        :word_guessor => @word_guesser,
+        :worc_creator => @word_creator,
+        :incorrect_guesses_left => @incorrect_guesses_left,
+        :word_display => @word_display,
+        :incorrect_characters => @incorrect_characters,
+        :secret_word => @secret_word
+      }
+      dump = YAML::dump(hash)
+      File.open(file_name, "w") { |file| file.write(dump) }
+    end
 
-    hash = {
-      :word_guessor => @word_guesser,
-      :worc_creator => @word_creator,
-      :incorrect_guesses_left => @incorrect_guesses_left,
-      :word_display => @word_display,
-      :incorrect_characters => @incorrect_characters,
-      :secret_word => @secret_word
-    }
-    dump = YAML::dump(hash)
-    File.open(file_name, "w") { |file| file.write(dump) }
   end
 
   def load_game_from_yaml
