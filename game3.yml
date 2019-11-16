@@ -1,0 +1,13 @@
+---
+:word_guessor: !ruby/object:WordGuesser {}
+:worc_creator: 
+:incorrect_guesses_left: 0
+:word_display: lan_ly
+:incorrect_characters:
+- e
+- i
+- o
+- u
+- s
+- c
+:secret_word: lankly
